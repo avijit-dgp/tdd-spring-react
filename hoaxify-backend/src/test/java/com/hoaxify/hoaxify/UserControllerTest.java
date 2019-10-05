@@ -76,7 +76,7 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	public void postUser_whenUserIsValid_passwordIsHasheedInDatabase() {
+	public void postUser_whenUserIsValid_passwordIsHashedInDatabase() {
 		User user = TestUtil.createValidUser();
 		testRestTemplate.postForEntity(API_1_0_USERS, user, Object.class);
 		List<User> users = userRepository.findAll();
