@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +48,9 @@ public class HoaxControllerTest {
 	
 	@Autowired
 	HoaxRepository hoaxRepository;
+	
+	@PersistenceUnit
+	private EntityManagerFactory entityManagerFactory;
 	
 	@Before
 	public void cleanup() {
@@ -164,12 +171,14 @@ public class HoaxControllerTest {
 	
 	@Test
 	public void postHoax_whenHoaxIsValidAndUserIsAuthorized_hoaxCanBeAccessedFromUserEntity() {
-		userService.save(TestUtil.createValidUser("user1"));
+		User user = userService.save(TestUtil.createValidUser("user1"));
 		authenticate("user1");
 		Hoax hoax = TestUtil.createValidHoax();
 		postHoax(hoax, Object.class);
-
-		User inDBUser = userRepository.findByUsername("user1");
+		
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		
+		User inDBUser = entityManager.find(User.class, user.getId());
 		assertThat(inDBUser.getHoaxes().size()).isEqualTo(1);
 		
 	}
