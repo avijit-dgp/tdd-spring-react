@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.hoaxify.hoaxify.error.ApiError;
 import com.hoaxify.hoaxify.hoax.Hoax;
 import com.hoaxify.hoaxify.hoax.HoaxRepository;
+import com.hoaxify.hoaxify.user.User;
 import com.hoaxify.hoaxify.user.UserRepository;
 import com.hoaxify.hoaxify.user.UserService;
 
@@ -148,7 +149,30 @@ public class HoaxControllerTest {
 		Map<String, String> validationErrors = response.getBody().getValidationErrors();
 		assertThat(validationErrors.get("content")).isNotNull();
 	}
+	
+	@Test
+	public void postHoax_whenHoaxIsValidAndUserIsAuthorized_hoaxSavedWithAuthenticatedUserInfo() {
+		userService.save(TestUtil.createValidUser("user1"));
+		authenticate("user1");
+		Hoax hoax = TestUtil.createValidHoax();
+		postHoax(hoax, Object.class);
+		
+		Hoax inDB = hoaxRepository.findAll().get(0);
+		
+		assertThat(inDB.getUser().getUsername()).isEqualTo("user1");
+	}
+	
+	@Test
+	public void postHoax_whenHoaxIsValidAndUserIsAuthorized_hoaxCanBeAccessedFromUserEntity() {
+		userService.save(TestUtil.createValidUser("user1"));
+		authenticate("user1");
+		Hoax hoax = TestUtil.createValidHoax();
+		postHoax(hoax, Object.class);
 
+		User inDBUser = userRepository.findByUsername("user1");
+		assertThat(inDBUser.getHoaxes().size()).isEqualTo(1);
+		
+	}
 	private <T> ResponseEntity<T> postHoax(Hoax hoax, Class<T> responseType) {
 		return testRestTemplate.postForEntity(API_1_0_HOAXES, hoax, responseType);
 	}
