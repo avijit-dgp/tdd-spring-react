@@ -88,7 +88,7 @@ describe('HoaxView', () => {
       const images = container.querySelectorAll('img');
       expect(images.length).toBe(1);
     });
-    it('sts the attachment path as source for file attachment image', () => {
+    it('sets the attachment path as source for file attachment image', () => {
       const { container } = setup(hoaxWithAttachment);
       const images = container.querySelectorAll('img');
       const attachmentImage = images[1];
