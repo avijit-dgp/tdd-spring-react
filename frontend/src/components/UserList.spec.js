@@ -1,36 +1,26 @@
 import React from 'react';
 import {
-  render,
   waitForDomChange,
   waitForElement,
   fireEvent
 } from '@testing-library/react';
 import UserList from './UserList';
 import * as apiCalls from '../api/apiCalls';
-import { MemoryRouter } from 'react-router-dom';
-
-apiCalls.listUsers = jest.fn().mockResolvedValue({
-  data: {
-    content: [],
-    number: 0,
-    size: 3
-  }
-});
-
-const setup = () => {
-  return render(
-    <MemoryRouter>
-      <UserList />
-    </MemoryRouter>
-  );
-};
-
+import { Wrapper } from '../testHelper';
 const mockedEmptySuccessResponse = {
   data: {
     content: [],
     number: 0,
     size: 3
   }
+};
+
+apiCalls.listUsers = jest
+  .fn()
+  .mockResolvedValue({ ...mockedEmptySuccessResponse });
+
+const setup = () => {
+  return Wrapper(<UserList />);
 };
 
 const mockSuccessGetSinglePage = {

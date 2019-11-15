@@ -1,12 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import ProfileCard from './ProfileCard';
-const user = {
-  id: 1,
-  username: 'user1',
-  displayName: 'display1',
-  image: 'profile1.png'
-};
+import { loggedInState as user } from '../testHelper';
 
 describe('ProfileCard', () => {
   describe('Layout', () => {

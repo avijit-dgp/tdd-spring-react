@@ -4,22 +4,27 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import * as apiCalls from '../api/apiCalls';
 
-const configureStore = (addLogger = true) => {
-  let localStorageData = localStorage.getItem('hoax-auth');
+const configureStore = (addLogger = true, initialData) => {
+  let persistedState;
 
-  let persistedState = {
-    id: 0,
-    username: '',
-    displayName: '',
-    image: '',
-    password: '',
-    isLoggedIn: false
-  };
-  if (localStorageData) {
-    try {
-      persistedState = JSON.parse(localStorageData);
-      apiCalls.setAuthorizationHeader(persistedState);
-    } catch (error) {}
+  if (!initialData) {
+    persistedState = {
+      id: 0,
+      username: '',
+      displayName: '',
+      image: '',
+      password: '',
+      isLoggedIn: false
+    };
+    let localStorageData = localStorage.getItem('hoax-auth');
+    if (localStorageData) {
+      try {
+        persistedState = JSON.parse(localStorageData);
+        apiCalls.setAuthorizationHeader(persistedState);
+      } catch (error) {}
+    }
+  } else {
+    persistedState = initialData;
   }
 
   const middleware = addLogger

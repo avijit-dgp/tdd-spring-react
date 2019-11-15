@@ -1,41 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import TopBar from './TopBar';
-import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import authReducer from '../redux/authReducer';
 import * as authActions from '../redux/authActions';
-
-const loggedInState = {
-  id: 1,
-  username: 'user1',
-  displayName: 'display1',
-  image: 'profile1.png',
-  password: 'P4ssword',
-  isLoggedIn: true
-};
-
-const defaultState = {
-  id: 0,
-  username: '',
-  displayName: '',
-  image: '',
-  password: '',
-  isLoggedIn: false
-};
-
-let store;
+import { Wrapper, loggedInState, defaultState, store } from '../testHelper';
 
 const setup = (state = defaultState) => {
-  store = createStore(authReducer, state);
-  return render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TopBar />
-      </MemoryRouter>
-    </Provider>
-  );
+  return Wrapper(<TopBar />, state);
 };
 
 describe('TopBar', () => {

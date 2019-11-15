@@ -1,7 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import UserListItem from './UserListItem';
-import { MemoryRouter } from 'react-router-dom';
+import { Wrapper } from '../testHelper';
 
 const user = {
   username: 'user1',
@@ -10,11 +9,7 @@ const user = {
 };
 
 const setup = (propUser = user) => {
-  return render(
-    <MemoryRouter>
-      <UserListItem user={propUser} />
-    </MemoryRouter>
-  );
+  return Wrapper(<UserListItem user={propUser} />);
 };
 
 describe('UserListItem', () => {

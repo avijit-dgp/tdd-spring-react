@@ -1,11 +1,9 @@
 import React from 'react';
-import { render, fireEvent, waitForElement } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, waitForElement } from '@testing-library/react';
 import App from './App';
-import { Provider } from 'react-redux';
 import axios from 'axios';
-import configureStore from '../redux/configureStore';
 import * as apiCalls from '../api/apiCalls';
+import { WrapperForPath } from '../testHelper';
 
 apiCalls.listUsers = jest.fn().mockResolvedValue({
   data: {
@@ -63,14 +61,7 @@ beforeEach(() => {
 });
 
 const setup = (path) => {
-  const store = configureStore(false);
-  return render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[path]}>
-        <App />
-      </MemoryRouter>
-    </Provider>
-  );
+  return WrapperForPath(<App />, path);
 };
 const changeEvent = (content) => {
   return {

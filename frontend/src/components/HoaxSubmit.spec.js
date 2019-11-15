@@ -1,29 +1,11 @@
 import React from 'react';
-import { render, fireEvent, waitForDomChange } from '@testing-library/react';
+import { fireEvent, waitForDomChange } from '@testing-library/react';
 import HoaxSubmit from './HoaxSubmit';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import authReducer from '../redux/authReducer';
 import * as apiCalls from '../api/apiCalls';
-
-const defaultState = {
-  id: 1,
-  username: 'user1',
-  displayName: 'display1',
-  image: 'profile1.png',
-  password: 'P4ssword',
-  isLoggedIn: true
-};
-
-let store;
+import { Wrapper, loggedInState as defaultState } from '../testHelper';
 
 const setup = (state = defaultState) => {
-  store = createStore(authReducer, state);
-  return render(
-    <Provider store={store}>
-      <HoaxSubmit />
-    </Provider>
-  );
+  return Wrapper(<HoaxSubmit />, state);
 };
 
 describe('HoaxSubmit', () => {

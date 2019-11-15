@@ -1,15 +1,13 @@
 import React from 'react';
 import {
-  render,
   waitForElement,
   fireEvent,
   waitForDomChange
 } from '@testing-library/react';
 import UserPage from './UserPage';
 import * as apiCalls from '../api/apiCalls';
-import { Provider } from 'react-redux';
-import configureStore from '../redux/configureStore';
 import axios from 'axios';
+import { Wrapper, store } from '../testHelper';
 
 apiCalls.loadHoaxes = jest.fn().mockResolvedValue({
   data: {
@@ -61,14 +59,8 @@ const match = {
   }
 };
 
-let store;
 const setup = (props) => {
-  store = configureStore(false);
-  return render(
-    <Provider store={store}>
-      <UserPage {...props} />
-    </Provider>
-  );
+  return Wrapper(<UserPage {...props} />);
 };
 beforeEach(() => {
   localStorage.clear();
