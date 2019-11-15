@@ -1,9 +1,9 @@
 import React from 'react';
 import * as apiCalls from '../api/apiCalls';
 import ProfileCard from '../components/ProfileCard';
-import { connect } from 'react-redux';
 import HoaxFeed from '../components/HoaxFeed';
 import Spinner from '../components/Spinner';
+import { Auth } from '../AuthContext';
 
 class UserPage extends React.Component {
   state = {
@@ -85,11 +85,7 @@ class UserPage extends React.Component {
             image: undefined
           },
           () => {
-            const action = {
-              type: 'update-success',
-              payload: user
-            };
-            this.props.dispatch(action);
+            this.props.actions.updateUser(user);
           }
         );
       })
@@ -184,10 +180,15 @@ UserPage.defaultProps = {
   }
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loggedInUser: state
-  };
-};
-
-export default connect(mapStateToProps)(UserPage);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return (
+      <UserPage
+        loggedInUser={this.context.state}
+        actions={this.context.actions}
+        {...this.props}
+      />
+    );
+  }
+}

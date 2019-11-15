@@ -1,8 +1,8 @@
 import React from 'react';
 import UserList from '../components/UserList';
 import HoaxSubmit from '../components/HoaxSubmit';
-import { connect } from 'react-redux';
 import HoaxFeed from '../components/HoaxFeed';
+import { Auth } from '../AuthContext';
 
 class HomePage extends React.Component {
   render() {
@@ -21,10 +21,10 @@ class HomePage extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    loggedInUser: state
-  };
-};
 
-export default connect(mapStateToProps)(HomePage);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return <HomePage loggedInUser={this.context.state} {...this.props} />;
+  }
+}

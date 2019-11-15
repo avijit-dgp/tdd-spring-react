@@ -1,8 +1,7 @@
 import React from 'react';
 import Input from '../components/Input';
 import ButtonWithProgress from '../components/ButtonWithProgress';
-import { connect } from 'react-redux';
-import * as authActions from '../redux/authActions';
+import { Auth } from '../AuthContext';
 
 export class LoginPage extends React.Component {
   state = {
@@ -105,15 +104,9 @@ LoginPage.defaultProps = {
   dispatch: () => {}
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: {
-      postLogin: (body) => dispatch(authActions.loginHandler(body))
-    }
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(LoginPage);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return <LoginPage actions={this.context.actions} {...this.props} />;
+  }
+}

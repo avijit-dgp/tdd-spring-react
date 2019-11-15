@@ -1,28 +1,20 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-// import { createStore } from 'redux';
-import configureStore from './redux/configureStore';
 import { MemoryRouter } from 'react-router-dom';
-//import authReducer from './redux/authReducer';
-
-export let store;
+import AuthContext from './AuthContext';
 
 export const Wrapper = (child, state) => {
-  store = configureStore(false, state);
   return render(
-    <Provider store={store}>
+    <AuthContext initialData={state}>
       <MemoryRouter>{child}</MemoryRouter>
-    </Provider>
+    </AuthContext>
   );
 };
-
 export const WrapperForPath = (child, path) => {
-  store = configureStore(false);
   return render(
-    <Provider store={store}>
+    <AuthContext>
       <MemoryRouter initialEntries={[path]}>{child}</MemoryRouter>
-    </Provider>
+    </AuthContext>
   );
 };
 

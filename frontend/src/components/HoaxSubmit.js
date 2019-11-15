@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
-import { connect } from 'react-redux';
 import * as apiCalls from '../api/apiCalls';
 import ButtonWithProgress from './ButtonWithProgress';
 import Input from './Input';
+import { Auth } from '../AuthContext';
 
 class HoaxSubmit extends Component {
   state = {
@@ -151,10 +151,9 @@ class HoaxSubmit extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedInUser: state
-  };
-};
-
-export default connect(mapStateToProps)(HoaxSubmit);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return <HoaxSubmit loggedInUser={this.context.state} {...this.props} />;
+  }
+}

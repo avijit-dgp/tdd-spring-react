@@ -3,6 +3,8 @@ import * as apiCalls from '../api/apiCalls';
 import Spinner from './Spinner';
 import HoaxView from './HoaxView';
 import Modal from './Modal';
+import { Auth } from '../AuthContext';
+
 class HoaxFeed extends Component {
   state = {
     page: {
@@ -163,5 +165,7 @@ class HoaxFeed extends Component {
     );
   }
 }
+
+HoaxFeed.contextType = Auth;
 
 export default HoaxFeed;

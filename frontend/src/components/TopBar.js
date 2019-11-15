@@ -1,8 +1,8 @@
 import React from 'react';
 import logo from '../assets/hoaxify-logo.png';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
+import { Auth } from '../AuthContext';
 
 class TopBar extends React.Component {
   state = {
@@ -126,10 +126,15 @@ class TopBar extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state
-  };
-};
-
-export default connect(mapStateToProps)(TopBar);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return (
+      <TopBar
+        user={this.context.state}
+        dispatch={this.context.actions.logout}
+        {...this.props}
+      />
+    );
+  }
+}

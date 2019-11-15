@@ -1,8 +1,7 @@
 import React from 'react';
 import Input from '../components/Input';
 import ButtonWithProgress from '../components/ButtonWithProgress';
-import { connect } from 'react-redux';
-import * as authActions from '../redux/authActions';
+import { Auth } from '../AuthContext';
 
 export class UserSignupPage extends React.Component {
   state = {
@@ -146,15 +145,9 @@ UserSignupPage.defaultProps = {
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: {
-      postSignup: (user) => dispatch(authActions.signupHandler(user))
-    }
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(UserSignupPage);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return <UserSignupPage actions={this.context.actions} {...this.props} />;
+  }
+}

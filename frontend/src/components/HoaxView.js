@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Auth } from '../AuthContext';
 
 class HoaxView extends Component {
   render() {
@@ -56,10 +56,9 @@ class HoaxView extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedInUser: state
-  };
-};
-
-export default connect(mapStateToProps)(HoaxView);
+export default class extends React.Component {
+  static contextType = Auth;
+  render() {
+    return <HoaxView loggedInUser={this.context.state} {...this.props} />;
+  }
+}
